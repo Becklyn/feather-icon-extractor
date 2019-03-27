@@ -1,0 +1,15 @@
+{
+    "name": "@becklyn/feather-icons-extractor",
+    "version": "1.0.0",
+    "description": "Extracts and pre-processes feather icons",
+    "main": "src/IconExtractor.js",
+    "dependencies": {
+        "feather-icons": "^4.19.0",
+        "fs-extra": "^7.0.1",
+        "kleur": "^3.0.2",
+        "svgo": "^1.2.0"
+    },
+    "devDependencies": {
+        "@types/fs-extra": "^5.0.5"
+    }
+}
