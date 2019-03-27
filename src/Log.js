@@ -1,4 +1,4 @@
-const {yellow, green, black, bgGreen, blue, red} = require("kleur");
+const {yellow, green, black, bgGreen, blue, red, bgRed, white} = require("kleur");
 
 /**
  *
@@ -48,6 +48,20 @@ class Log
         console.log(bgGreen(black("                  ")));
         console.log(bgGreen(black(" All done.        ")));
         console.log(bgGreen(black("                  ")));
+    }
+
+
+    /**
+     * @param {string} message
+     */
+    error (message)
+    {
+        console.log("");
+        console.log("");
+        let emptyLine = " ".repeat(message.length + 2);
+        console.log(bgRed(white(emptyLine)));
+        console.log(bgRed(white(` ${message} `)));
+        console.log(bgRed(white(emptyLine)));
     }
 
 

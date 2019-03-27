@@ -58,8 +58,16 @@ class IconExtractor
 
         this.log.section("Generating the icons");
         this.log.comment(`Generating the icons in ${blue(path.relative(process.cwd(), this.targetDirectory))}`);
-        await this.copyIcons(mapping);
-        this.log.allDone();
+        let copiedSuccessful = await this.copyIcons(mapping);
+
+        if (copiedSuccessful)
+        {
+            this.log.allDone();
+        }
+        else
+        {
+            this.log.error("Not all icons were created successfully.");
+        }
     }
 
 
@@ -77,10 +85,12 @@ class IconExtractor
      * Copies all icons
      *
      * @param {IconMapping} mapping
-     * @returns {Promise<void>}
+     * @returns {Promise<boolean>}
      */
     async copyIcons (mapping)
     {
+        let hadError = false;
+
         for (let newName in mapping)
         {
             if (!mapping.hasOwnProperty(newName))
@@ -103,6 +113,7 @@ class IconExtractor
             if (undefined === featherIcon)
             {
                 this.log.iconError(`Icon not found with feather name ${blue(featherName)}.`);
+                hadError = true;
                 continue;
             }
 
@@ -129,6 +140,8 @@ class IconExtractor
             await fs.outputFile(path.join(this.targetDirectory, `${newName}.svg`), svg);
             this.log.iconDone();
         }
+
+        return !hadError;
     }
 }
 
