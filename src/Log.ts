@@ -3,14 +3,12 @@ const {yellow, green, black, bgGreen, blue, red, bgRed, white} = require("kleur"
 /**
  *
  */
-class Log
+export class Log
 {
     /**
      * Renders a section
-     *
-     * @param {string} text
      */
-    section (text)
+    public section (text: string) : void
     {
         console.log("");
         console.log(yellow(text));
@@ -21,7 +19,7 @@ class Log
     /**
      *
      */
-    done ()
+    public done () : void
     {
         console.log(`  ... ${green("done")}`);
     }
@@ -29,9 +27,8 @@ class Log
 
     /**
      *
-     * @param {string} text
      */
-    comment (text)
+    public comment (text: string) : void
     {
         console.log(`  // ${text}`);
         console.log("");
@@ -41,7 +38,7 @@ class Log
     /**
      *
      */
-    allDone ()
+    public allDone () : void
     {
         console.log("");
         console.log("");
@@ -52,9 +49,9 @@ class Log
 
 
     /**
-     * @param {string} message
+     *
      */
-    error (message)
+    public error (message: string) : void
     {
         console.log("");
         console.log("");
@@ -66,18 +63,18 @@ class Log
 
 
     /**
-     * @param {string} name
+     *
      */
-    iconStart (name)
+    public iconStart (name: string) : void
     {
         console.log(`  Generating icon ${blue(name)}.svg`)
     }
 
 
     /**
-     * @param {string} message
+     *
      */
-    iconStep (message)
+    public iconStep (message: string) : void
     {
         console.log(`    -> ${message}`);
     }
@@ -86,7 +83,7 @@ class Log
     /**
      *
      */
-    iconDone ()
+    public iconDone () : void
     {
         console.log(`    ${green("done")}`);
         console.log("");
@@ -94,12 +91,10 @@ class Log
 
 
     /**
-     * @param {string} message
+     *
      */
-    iconError (message)
+    public iconError (message: string) : void
     {
         console.log(`    ${red("Error")}: ${message}`);
     }
 }
-
-module.exports = Log;

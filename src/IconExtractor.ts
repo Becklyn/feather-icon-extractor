@@ -1,13 +1,20 @@
-const fs = require("fs-extra");
-const path = require("path");
-const Log = require("./Log");
-const {blue} = require("kleur");
-const feather = require("feather-icons");
-const SVGO = require("svgo");
+import {Log} from "./Log";
+import fs from "fs-extra";
+import path from "path";
+import {blue} from "kleur";
+import SVGO from "svgo";
 
-/**
- * @typedef {Object.<string, string|{name: string, minify: boolean}>} IconMapping
- */
+
+interface IconConfig
+{
+    name: string;
+    minify: boolean;
+}
+
+interface IconMapping
+{
+    [name: string]: string | IconConfig;
+}
 
 
 /**
@@ -15,27 +22,20 @@ const SVGO = require("svgo");
  */
 class IconExtractor
 {
+    private targetDirectory: string;
+    private log: Log;
+    private featherIcons: FeatherIcons.IconMap;
+    private svgo: SVGO;
+
+
     /**
-     * @param {string} targetDirectory
+     *
      */
-    constructor (targetDirectory)
+    constructor (featherIcons: FeatherIcons.IconMap, targetDirectory: string)
     {
-        /**
-         * @private
-         * @type {string}
-         */
         this.targetDirectory = targetDirectory;
-
-        /**
-         * @private
-         * @type {Log}
-         */
         this.log = new Log();
-
-        /**
-         * @private
-         * @type {SVGO}
-         */
+        this.featherIcons = featherIcons;
         this.svgo = new SVGO({
             plugins: [
                 {removeViewBox: false},
@@ -46,11 +46,8 @@ class IconExtractor
 
     /**
      * Extracts all given icons
-     *
-     * @param mapping
-     * @returns {Promise<void>}
      */
-    async extract (mapping)
+    public async extract (mapping: IconMapping): Promise<void>
     {
         this.log.section("Clearing the output directory");
         this.clearStorageDir();
@@ -72,9 +69,9 @@ class IconExtractor
 
 
     /**
-     * @private
+     * Cleans the output dir where the files should be stored
      */
-    clearStorageDir ()
+    private clearStorageDir (): void
     {
         fs.removeSync(this.targetDirectory);
         fs.ensureDirSync(this.targetDirectory);
@@ -83,11 +80,8 @@ class IconExtractor
 
     /**
      * Copies all icons
-     *
-     * @param {IconMapping} mapping
-     * @returns {Promise<boolean>}
      */
-    async copyIcons (mapping)
+    public async copyIcons (mapping: IconMapping): Promise<boolean>
     {
         let hadError = false;
 
@@ -98,28 +92,26 @@ class IconExtractor
                 continue;
             }
 
-            let featherName = mapping[newName];
-            let minify = true;
-
-            if (typeof mapping[newName] !== "string")
-            {
-                newName = mapping[newName].name;
-                minify = mapping[newName].minify;
-            }
+            let icon: IconConfig = (typeof mapping[newName] !== "string")
+                ? mapping[newName] as IconConfig
+                : {
+                    name: mapping[newName] as string,
+                    minify: true,
+                };
 
             this.log.iconStart(newName);
-            let featherIcon = feather.icons[featherName];
+            let featherIcon = this.featherIcons[icon.name];
 
             if (undefined === featherIcon)
             {
-                this.log.iconError(`Icon not found with feather name ${blue(featherName)}.`);
+                this.log.iconError(`Icon not found with feather name ${blue(icon.name)}.`);
                 hadError = true;
                 continue;
             }
 
             let svg = featherIcon.toSvg();
 
-            if (minify)
+            if (icon.minify)
             {
                 this.log.iconStep("minify");
                 svg = (await this.svgo.optimize(svg)).data;
@@ -127,14 +119,14 @@ class IconExtractor
 
             this.log.iconStep("remove classes");
             svg = svg.replace(/ class="([^"]*)"/,
-                (fullMatch, classesMatch) =>
+                (fullMatch: string, classesMatch: string) =>
                 {
                     let classes = classesMatch.split(/\s+/);
 
                     return classes.includes("feather")
                         ? ""
                         : fullMatch;
-                }
+                },
             );
 
             await fs.outputFile(path.join(this.targetDirectory, `${newName}.svg`), svg);
