@@ -1,7 +1,7 @@
 {
     "name": "@becklyn/feather-icons-extractor",
     "description": "Extracts and pre-processes feather icons",
-    "version": "2.0.0",
+    "version": "1.0.0",
     "main": "dist/IconExtractor.js",
     "types": "dist/IconExtractor.d.ts",
     "scripts": {
