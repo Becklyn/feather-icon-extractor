@@ -2,7 +2,7 @@ Feather Icon Extractor
 ======================
 
 An icon extractor that is tailored to the data structure of `feather-icons`.
-You need (and can) load `feather-icons` yourself, so that all versions are supported that implement a compatible signature as in `src/@types/feather-icons.d.ts`.
+You need (and can) load `feather-icons` yourself, so that all versions are supported that implement the icons listing like the `IconLibrary` defined in `src/Extractor.ts`.
 
 
 Configuration

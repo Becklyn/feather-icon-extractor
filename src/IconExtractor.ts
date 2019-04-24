@@ -5,15 +5,34 @@ import {blue} from "kleur";
 import SVGO from "svgo";
 
 
-interface IconConfig
+/**
+ * The config of a single icon to generate.
+ */
+interface IconCompilationConfig
 {
     name: string;
     minify: boolean;
 }
 
-interface IconMapping
+/**
+ * The mapping which icons should be generated and what icons from the library should be used.
+ */
+interface IconCompilationMapping
 {
-    [name: string]: string | IconConfig;
+    [name: string]: string | IconCompilationConfig;
+}
+
+/**
+ * The library of existing icons.
+ */
+interface IconsLibrary
+{
+    /**
+     * Map of names to icon objects
+     */
+    [name: string]: {
+        toSvg (): string;
+    };
 }
 
 
@@ -24,14 +43,14 @@ class IconExtractor
 {
     private targetDirectory: string;
     private log: Log;
-    private featherIcons: FeatherIcons.IconMap;
+    private featherIcons: IconsLibrary;
     private svgo: SVGO;
 
 
     /**
      *
      */
-    constructor (featherIcons: FeatherIcons.IconMap, targetDirectory: string)
+    constructor (featherIcons: IconsLibrary, targetDirectory: string)
     {
         this.targetDirectory = targetDirectory;
         this.log = new Log();
@@ -47,7 +66,7 @@ class IconExtractor
     /**
      * Extracts all given icons
      */
-    public async extract (mapping: IconMapping): Promise<void>
+    public async extract (mapping: IconCompilationMapping): Promise<void>
     {
         this.log.section("Clearing the output directory");
         this.clearStorageDir();
@@ -81,7 +100,7 @@ class IconExtractor
     /**
      * Copies all icons
      */
-    public async copyIcons (mapping: IconMapping): Promise<boolean>
+    public async copyIcons (mapping: IconCompilationMapping): Promise<boolean>
     {
         let hadError = false;
 
@@ -92,8 +111,8 @@ class IconExtractor
                 continue;
             }
 
-            let icon: IconConfig = (typeof mapping[newName] !== "string")
-                ? mapping[newName] as IconConfig
+            let icon: IconCompilationConfig = (typeof mapping[newName] !== "string")
+                ? mapping[newName] as IconCompilationConfig
                 : {
                     name: mapping[newName] as string,
                     minify: true,
