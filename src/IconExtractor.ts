@@ -24,15 +24,14 @@ class IconExtractor
 {
     private targetDirectory: string;
     private log: Log;
-    private featherIcons: FeatherIcons.Library;
+    private featherIcons: FeatherIcons.IconMap;
     private svgo: SVGO;
 
 
     /**
-     * @param {string} featherIcons
-     * @param {string} targetDirectory
+     *
      */
-    constructor (featherIcons: FeatherIcons.Library, targetDirectory: string)
+    constructor (featherIcons: FeatherIcons.IconMap, targetDirectory: string)
     {
         this.targetDirectory = targetDirectory;
         this.log = new Log();
@@ -101,7 +100,7 @@ class IconExtractor
                 };
 
             this.log.iconStart(newName);
-            let featherIcon = this.featherIcons.icons[icon.name];
+            let featherIcon = this.featherIcons[icon.name];
 
             if (undefined === featherIcon)
             {
