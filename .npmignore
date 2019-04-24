@@ -2,6 +2,9 @@
 /.idea
 /.gitignore
 /node_modules
+
+# Don't publish
+/.github
 /package-lock.json
 /tsconfig.json
 
