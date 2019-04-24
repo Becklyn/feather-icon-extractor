@@ -1,6 +1,10 @@
 Feather Icon Extractor
 ======================
 
+An icon extractor that is tailored to the data structure of `feather-icons`.
+You need (and can) load `feather-icons` yourself, so that all versions are supported that implement a compatible signature as in `src/@types/feather-icons.d.ts`.
+
+
 Configuration
 -------------
 
@@ -22,9 +26,10 @@ Add a executable file, which can look like this:
 ```js
 #!/usr/bin/env node
 const Extractor = require("@becklyn/feather-icons-extractor");
+const featherIcons = require("feather-icons");
 const path = require("path");
 
-(new Extractor(path.join(__dirname, "../assets/icon"))).extract({
+(new Extractor(featherIcons.icons, path.join(__dirname, "../assets/icon"))).extract({
     add: "plus",
     blocked: "slash",
     help: {
