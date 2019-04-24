@@ -1,15 +1,22 @@
 {
     "name": "@becklyn/feather-icons-extractor",
-    "version": "1.0.0",
     "description": "Extracts and pre-processes feather icons",
-    "main": "src/IconExtractor.js",
+    "version": "2.0.0",
+    "main": "dist/IconExtractor.js",
+    "types": "dist/IconExtractor.d.ts",
+    "scripts": {
+        "build": "tsc",
+        "prepublish": "npm run build",
+        "watch": "tsc -w"
+    },
     "dependencies": {
-        "feather-icons": "^4.19.0",
         "fs-extra": "^7.0.1",
         "kleur": "^3.0.2",
         "svgo": "^1.2.0"
     },
     "devDependencies": {
-        "@types/fs-extra": "^5.0.5"
+        "@types/fs-extra": "^5.0.5",
+        "@types/svgo": "^1.0.1",
+        "typescript": "^3.4.5"
     }
 }

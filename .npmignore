@@ -1,7 +1,9 @@
 # Global ignores
 /.idea
+/.gitignore
 /node_modules
 /package-lock.json
+/tsconfig.json
 
-# Ignore dist dirs
-/dist
+# Ignore src dirs
+/src
