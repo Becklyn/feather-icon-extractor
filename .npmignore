@@ -11,5 +11,5 @@
 # ignore all .ts when publishing
 *.ts
 *.tsx
-!/src/@types/*.d.ts
+!*.d.ts
 
