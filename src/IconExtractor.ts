@@ -11,7 +11,7 @@ import SVGO from "svgo";
 interface IconCompilationConfig
 {
     name: string;
-    minify: boolean;
+    minify?: boolean;
 }
 
 /**
@@ -130,7 +130,7 @@ class IconExtractor
 
             let svg = featherIcon.toSvg();
 
-            if (icon.minify)
+            if (false !== icon.minify)
             {
                 this.log.iconStep("minify");
                 svg = (await this.svgo.optimize(svg)).data;
