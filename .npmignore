@@ -8,5 +8,8 @@
 /package-lock.json
 /tsconfig.json
 
-# Ignore src dirs
-/src
+# ignore all .ts when publishing
+*.ts
+*.tsx
+!/src/@types/*.d.ts
+

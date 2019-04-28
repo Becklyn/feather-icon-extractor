@@ -3,5 +3,7 @@
 /node_modules
 /package-lock.json
 
-# Ignore dist dirs
-/dist
+# ignore build files
+*.d.ts
+*.js
+!/src/@types/*.d.ts
