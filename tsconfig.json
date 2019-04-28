@@ -6,7 +6,6 @@
         "target": "es2018",
         "noImplicitAny": true,
         "moduleResolution": "node",
-        "outDir": "dist",
         "lib": [
             "es2018"
         ],
