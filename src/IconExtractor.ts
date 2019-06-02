@@ -1,7 +1,7 @@
 import {Log} from "./Log";
 import fs from "fs-extra";
 import path from "path";
-import {blue} from "kleur";
+import {blue, underline} from "kleur";
 import SVGO from "svgo";
 
 
@@ -10,8 +10,9 @@ import SVGO from "svgo";
  */
 interface IconCompilationConfig
 {
-    name: string;
+    name?: string;
     minify?: boolean;
+    svg?: string;
 }
 
 /**
@@ -119,16 +120,38 @@ class IconExtractor
                 };
 
             this.log.iconStart(newName);
-            let featherIcon = this.featherIcons[icon.name];
+            let svg;
 
-            if (undefined === featherIcon)
+            if (icon.name !== undefined)
             {
-                this.log.iconError(`Icon not found with feather name ${blue(icon.name)}.`);
+                if (icon.svg !== undefined)
+                {
+                    this.log.iconError(`Can't pass both ${underline("name")} and ${underline("svg")} in key ${blue(newName)}.`);
+                    hadError = true;
+                    continue;
+                }
+
+                let featherIcon = this.featherIcons[icon.name];
+
+                if (undefined === featherIcon)
+                {
+                    this.log.iconError(`Icon not found with feather ${underline("name")} ${blue(icon.name)}.`);
+                    hadError = true;
+                    continue;
+                }
+
+                svg = featherIcon.toSvg();
+            }
+            else if (icon.svg !== undefined)
+            {
+                svg = icon.svg;
+            }
+            else
+            {
+                this.log.iconError(`Either ${underline("name")} or ${underline("svg")} must be passed in key ${blue(newName)}.`);
                 hadError = true;
                 continue;
             }
-
-            let svg = featherIcon.toSvg();
 
             if (false !== icon.minify)
             {
