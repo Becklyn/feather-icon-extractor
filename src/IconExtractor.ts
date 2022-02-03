@@ -2,7 +2,7 @@ import {Log} from "./Log";
 import fs from "fs-extra";
 import path from "path";
 import {blue, underline} from "kleur";
-import SVGO from "svgo";
+import {optimize, OptimizedError, OptimizedSvg} from "svgo";
 
 
 /**
@@ -37,15 +37,11 @@ interface IconsLibrary
 }
 
 
-/**
- *
- */
 class IconExtractor
 {
-    private targetDirectory: string;
+    private readonly targetDirectory: string;
+    private readonly featherIcons: IconsLibrary;
     private log: Log;
-    private featherIcons: IconsLibrary;
-    private svgo: SVGO;
 
 
     /**
@@ -56,11 +52,6 @@ class IconExtractor
         this.targetDirectory = targetDirectory;
         this.log = new Log();
         this.featherIcons = featherIcons;
-        this.svgo = new SVGO({
-            plugins: [
-                {removeViewBox: false},
-            ],
-        });
     }
 
 
@@ -156,7 +147,24 @@ class IconExtractor
             if (false !== icon.minify)
             {
                 this.log.iconStep("minify");
-                svg = (await this.svgo.optimize(svg)).data;
+                const result = optimize(svg, {
+                    plugins: [
+                        {
+                            name: "removeViewBox",
+                            active: false,
+                        },
+                    ],
+                    multipass: true,
+                });
+
+                if (result.modernError)
+                {
+                    this.log.iconError(`SVGO failed to optimize ${underline("name")}. An unexpected error occurred: ${result.modernError}.`);
+                    hadError = true;
+                    continue;
+                }
+
+                svg = (result as OptimizedSvg).data;
             }
 
             this.log.iconStep("remove classes");

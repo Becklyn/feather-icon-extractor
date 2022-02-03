@@ -1,7 +1,9 @@
-vNext
+2.2.0
 =====
 
 *   (internal) Use same changelog format as in all other Becklyn projects.
+*   (improvement) Upgraded to the latest version of SVGO.
+*   (improvement) Enabled `multipass` optimizations of SVGO.
 
 
 2.1.0

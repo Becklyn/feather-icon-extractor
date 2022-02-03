@@ -10,13 +10,13 @@
         "watch": "tsc -w"
     },
     "dependencies": {
-        "fs-extra": "^7.0.1",
-        "kleur": "^3.0.2",
-        "svgo": "^1.2.0"
+        "fs-extra": "^10.0.0",
+        "kleur": "^4.1.4",
+        "svgo": "^2.8.0"
     },
     "devDependencies": {
-        "@types/fs-extra": "^5.0.5",
-        "@types/svgo": "^1.0.1",
+        "@types/fs-extra": "^9.0.13",
+        "@types/svgo": "^2.6.1",
         "typescript": "^3.4.5"
     }
 }
