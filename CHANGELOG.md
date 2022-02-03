@@ -4,6 +4,7 @@
 *   (internal) Use same changelog format as in all other Becklyn projects.
 *   (improvement) Upgraded to the latest version of SVGO.
 *   (improvement) Enabled `multipass` optimizations of SVGO.
+*   (internal) Added new NPM scripts: `dev` and `test`.
 
 
 2.1.0

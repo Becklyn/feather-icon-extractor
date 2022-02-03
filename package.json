@@ -6,7 +6,9 @@
     "types": "src/IconExtractor.d.ts",
     "scripts": {
         "build": "tsc",
+        "dev": "tsc --noEmitOnError --noErrorTruncation --listEmittedFiles --pretty -w",
         "prepublishOnly": "npm run build",
+        "test": "npm run build",
         "watch": "tsc -w"
     },
     "dependencies": {
